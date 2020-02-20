@@ -4,8 +4,10 @@ let myMap;
 let firstVisit = true;
 let Btn1 = true;
 let Btn2 = true;
+let Btn3 = true;
 // Lets put all our map options in a single object
 let userMarker;
+let mousePos;
 let mapLoaded;
 let zone;
 let tarArray = [
@@ -16,7 +18,7 @@ let tarArray = [
   [50.3652363580133, -4.141775965690613],
   [50.3647299117452, -4.1442811489105225]
   ];
-
+var Marker3, Marker4, Marker1, Marker2;
 
 
 
@@ -31,9 +33,9 @@ const options = {
 function preload() {
   // This parses the JSON text file into a Javascript Object
   // zone = loadJSON("data/zone.geo.json");
-  PopStart = loadSound('Sound/startPop.wav');
-  Pop = loadSound('Sound/popUp.wav');
-  Welcome = loadSound('welcome.wav');
+  // PopStart = loadSound('Sound/startPop.wav');
+  // Pop = loadSound('Sound/popUp.wav');
+  // Welcome = loadSound('468426__christianand__1-3-gaviotas.wav');
 }
 
 function setup() {
@@ -55,6 +57,13 @@ function setup() {
 
 }
 
+
+function draw() {
+  
+  mousePos = myMap.pixelToLatLng(mouseX, mouseY)
+  console.log(mousePos);
+}
+
 function gotPosition(position) {
 
   // Unlikely but we might get position before map is loaded!
@@ -71,36 +80,54 @@ function gotPosition(position) {
 
 
 }
-
+var mem, Smeaton, Anchor;
 
 function onMapLoaded() {
+
   mapLoaded = true;
 
   L.geoJSON(zone).addTo(myMap.map);
-
+ //icon creates and size with bind position.
+ //custom icon for memorial start point.
+  mem = L.icon({
+    iconUrl: 'mem.png',
+    iconSize:  [50, 70], // size of the icon
+    iconAnchor:  [20, 60],
+  });
   //custom icon setup for smeaton
-  var Smeaton = L.icon({
+  Smeaton = L.icon({
     iconUrl: 'light.gif',
     iconSize:  [50, 70], // size of the icon
     iconAnchor:  [25, 60],
 });
-
+ //custom icon for boats/ships 
+  Anchor = L.icon({
+    iconUrl: 'anchor.png',
+    iconSize:  [40, 50], // size of the icon
+    iconAnchor:  [20, 60],
+});
+  Drake = L.icon({
+    iconUrl: 'drake3.png',
+    iconSize:  [40, 50], // size of the icon
+    iconAnchor:  [20, 60],
+   
+});
+  Armada = L.icon({
+   iconUrl: 'armada.png',
+   iconSize:  [40, 50], // size of the icon
+   iconAnchor:  [20, 60],
+ 
+});
   //target markers
 
     drawtmark();
 
-
-
-  
-
    //opens modal by default
   $('#myModal').modal('show')
   //Plays morse code sound to start app
-  Pop.play();
+ 
 
-function draw() {
 
-}
   //variable for modal id btn1
 var btn1 = document.querySelector('#true1');
   
@@ -115,53 +142,73 @@ btn2.addEventListener('click', function(){
   $('#Btn2').modal('hide')
   
 })  
-var Marker1, Marker2, Marker3 = {};  
 
+var btn3 = document.querySelector('#true3');
+  
+btn3.addEventListener('click', function(){
+  $('#Btn3').modal('hide')
+  
+})  
 
+var btn4 = document.querySelector('#true4');
+  
+btn4.addEventListener('click', function(){
+  $('#Btn4').modal('hide')
+  
+})  
 
 function drawtmark(){
   
   //Start Marker
-   Marker1 = L.marker(tarArray[0],{icon: Smeaton}).addTo(myMap.map)
-   
+   Marker1 = L.marker(tarArray[0],{icon: mem}).addTo(myMap.map)
   
-  
-
-
   Marker1.on('click',function(e){
     $('#Btn1').modal('show')
 
         if (Marker1 != true1) {
           Marker1.remove();
-          Pop.play();
+          console.log('clicked');
           
         }
- 
-     
-            
     //Add marker2 to show where you clicked.
-     Marker2 = L.marker(tarArray[1], {icon: Smeaton}).addTo(myMap.map)  
-     Pop.play();
-     
+     Marker2 = L.marker(tarArray[1], {icon: Smeaton}).addTo(myMap.map)
+      
   Marker2.on('click',function(e){
     $('#Btn2').modal('show')
-        
+         var Marker3;
         if (Marker2 != false2) {
           Marker2.remove();
-          Pop.play();
-
         }
-    
-        
-          
-        Marker3 = L.marker(tarArray[2], {icon: Smeaton}).addTo(myMap.map);
+        Marker3 = L.marker(tarArray[2], {icon: Anchor}).addTo(myMap.map);
          
-  
+  Marker3.on('click',function(e){
+          $('#Btn3').modal('show')
+               
+              if (Marker3 != false3) {
+                Marker3.remove();
+              }
+
+
+        Marker4 = L.marker(tarArray[3], {icon: Drake}).addTo(myMap.map);
+
+
+
+  Marker4.on('click',function(e){
+          $('#Btn4').modal('show')
+               
+              if (Marker4 != false4) {
+                Marker4.remove();
+              }
+
+
+        Marker5 = L.marker(tarArray[4], {icon: Armada}).addTo(myMap.map);
+               
+});
+               
 });
 });
-
+  })
 }
 }
-
 
 
